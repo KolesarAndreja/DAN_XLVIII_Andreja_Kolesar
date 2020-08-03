@@ -1,0 +1,95 @@
+﻿<Window x:Class="DAN_XLIV_Andreja_Kolesar.View.Guest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DAN_XLIV_Andreja_Kolesar.View"
+        mc:Ignorable="d"
+        Title="Guest"
+        Height="auto"
+        Width="auto">
+    <Grid>
+
+            <Label Content="MENU:"
+                   HorizontalAlignment="Left"
+                   Margin="40,49,0,0"
+                   VerticalAlignment="Top"
+                   Width="58"
+                   FontWeight="Bold" />
+        <DataGrid x:Name="MenuGrid"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  ItemsSource="{Binding menuList, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding pizza, UpdateSourceTrigger=PropertyChanged}"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  HorizontalGridLinesBrush="Black"
+                  BorderBrush="Black"
+                  Foreground="Black"
+                  FontWeight="Bold"
+                  Margin="70,80,580,319">
+            <DataGrid.Columns>
+                    <DataGridTextColumn Header="Pizza"
+                                        Binding="{Binding dishName}" />
+                    <DataGridTextColumn Header="Price (rsd)"
+                                        Binding="{Binding price}" />
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="btnOrder"
+                                        Content="Order"
+                                        Visibility="{Binding DataContext.btnToOrder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, UpdateSourceTrigger=PropertyChanged}"
+                                        Command="{Binding DataContext.orderPizza, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, UpdateSourceTrigger=PropertyChanged}"
+                                        Margin="4"
+                                        FontWeight="Bold" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        <Button Content="Log out"
+                    Command="{Binding close, UpdateSourceTrigger=PropertyChanged}"
+                    HorizontalAlignment="Left"
+                    Margin="20,10,0,0"
+                    VerticalAlignment="Top"
+                    Width="75" />
+
+            <Label Content="MY ORDERS:"
+               Visibility="{Binding ordersVisibility, UpdateSourceTrigger=PropertyChanged }"
+               HorizontalAlignment="Left"
+               Margin="30,309,0,0"
+               VerticalAlignment="Top"
+               Width="90"
+               FontWeight="Bold" />
+        
+            <DataGrid x:Name="MyOrders"
+                        Height="auto"
+                        Width="auto"
+                        ItemsSource="{Binding myOrdersList, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding currentOrder, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding ordersVisibility, UpdateSourceTrigger=PropertyChanged }"
+                        IsReadOnly="True"
+                        HeadersVisibility="Column"
+                        AutoGenerateColumns="False"
+                        HorizontalGridLinesBrush="Black"
+                        BorderBrush="Black"
+                        Foreground="Black"
+                        FontWeight="Bold"
+                  Margin="70,340,580,59">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Pizza"
+                                    Binding="{Binding dishName}" />
+                <DataGridTextColumn Header="Quantity"
+                                    Binding="{Binding count}" />
+                <DataGridTextColumn Header="Date of order"
+                                    Binding="{Binding dateAndTime}" />
+                <DataGridTextColumn Header="Total Price(rsd)"
+                                    Binding="{Binding totalPrice}" />
+                <DataGridTextColumn Header="Status"
+                                    Binding="{Binding status}" />
+            </DataGrid.Columns> 
+        </DataGrid>
+
+    </Grid>
+</Window>

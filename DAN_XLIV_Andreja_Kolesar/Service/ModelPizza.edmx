@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbPizzeria1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDishes">
+          <Key>
+            <PropertyRef Name="dishId" />
+          </Key>
+          <Property Name="dishId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dishName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblOrders">
+          <Key>
+            <PropertyRef Name="orderId" />
+          </Key>
+          <Property Name="orderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="char" MaxLength="13" Nullable="false" />
+          <Property Name="dishId" Type="int" />
+          <Property Name="count" Type="int" Nullable="false" />
+          <Property Name="dateAndTime" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'dbPizzeria1.dbo.vwOrders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwOrders">
+          <Key>
+            <PropertyRef Name="orderId" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="count" />
+            <PropertyRef Name="dateAndTIme" />
+          </Key>
+          <Property Name="orderId" Type="int" Nullable="false" />
+          <Property Name="username" Type="char" MaxLength="13" Nullable="false" />
+          <Property Name="dishId" Type="int" />
+          <Property Name="count" Type="int" Nullable="false" />
+          <Property Name="dateAndTIme" Type="datetime" Nullable="false" />
+          <Property Name="totalPrice" Type="int" />
+        </EntityType>
+        <Association Name="FK__tblOrders__dishI__398D8EEE">
+          <End Role="tblDishes" Type="Self.tblDishes" Multiplicity="0..1" />
+          <End Role="tblOrders" Type="Self.tblOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDishes">
+              <PropertyRef Name="dishId" />
+            </Principal>
+            <Dependent Role="tblOrders">
+              <PropertyRef Name="dishId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbPizzeria1ModelStoreContainer">
+          <EntitySet Name="tblDishes" EntityType="Self.tblDishes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOrders" EntityType="Self.tblOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vwOrders" EntityType="Self.vwOrders" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwOrders].[orderId] AS [orderId], 
+    [vwOrders].[username] AS [username], 
+    [vwOrders].[dishId] AS [dishId], 
+    [vwOrders].[count] AS [count], 
+    [vwOrders].[dateAndTIme] AS [dateAndTIme], 
+    [vwOrders].[totalPrice] AS [totalPrice]
+    FROM [dbo].[vwOrders] AS [vwOrders]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__tblOrders__dishI__398D8EEE" Association="Self.FK__tblOrders__dishI__398D8EEE">
+            <End Role="tblDishes" EntitySet="tblDishes" />
+            <End Role="tblOrders" EntitySet="tblOrders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbPizzeria1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblDish">
+          <Key>
+            <PropertyRef Name="dishId" />
+          </Key>
+          <Property Name="dishId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dishName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblOrders" Relationship="Self.FK__tblOrders__dishI__398D8EEE" FromRole="tblDishes" ToRole="tblOrders" />
+        </EntityType>
+        <EntityType Name="tblOrder">
+          <Key>
+            <PropertyRef Name="orderId" />
+          </Key>
+          <Property Name="orderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="13" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="dishId" Type="Int32" />
+          <Property Name="count" Type="Int32" Nullable="false" />
+          <Property Name="dateAndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblDish" Relationship="Self.FK__tblOrders__dishI__398D8EEE" FromRole="tblOrders" ToRole="tblDishes" />
+        </EntityType>
+        <EntityType Name="vwOrder">
+          <Key>
+            <PropertyRef Name="orderId" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="count" />
+            <PropertyRef Name="dateAndTIme" />
+          </Key>
+          <Property Name="orderId" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="13" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="dishId" Type="Int32" />
+          <Property Name="count" Type="Int32" Nullable="false" />
+          <Property Name="dateAndTIme" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="totalPrice" Type="Int32" />
+        </EntityType>
+        <Association Name="FK__tblOrders__dishI__398D8EEE">
+          <End Role="tblDishes" Type="Self.tblDish" Multiplicity="0..1" />
+          <End Role="tblOrders" Type="Self.tblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDishes">
+              <PropertyRef Name="dishId" />
+            </Principal>
+            <Dependent Role="tblOrders">
+              <PropertyRef Name="dishId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbPizzeria1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDishes" EntityType="Self.tblDish" />
+          <EntitySet Name="tblOrders" EntityType="Self.tblOrder" />
+          <EntitySet Name="vwOrders" EntityType="Self.vwOrder" />
+          <AssociationSet Name="FK__tblOrders__dishI__398D8EEE" Association="Self.FK__tblOrders__dishI__398D8EEE">
+            <End Role="tblDishes" EntitySet="tblDishes" />
+            <End Role="tblOrders" EntitySet="tblOrders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbPizzeria1ModelStoreContainer" CdmEntityContainer="dbPizzeria1Entities">
+          <EntitySetMapping Name="tblDishes">
+            <EntityTypeMapping TypeName="dbPizzeria1Model.tblDish">
+              <MappingFragment StoreEntitySet="tblDishes">
+                <ScalarProperty Name="dishId" ColumnName="dishId" />
+                <ScalarProperty Name="dishName" ColumnName="dishName" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOrders">
+            <EntityTypeMapping TypeName="dbPizzeria1Model.tblOrder">
+              <MappingFragment StoreEntitySet="tblOrders">
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="dishId" ColumnName="dishId" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="dateAndTime" ColumnName="dateAndTime" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwOrders">
+            <EntityTypeMapping TypeName="dbPizzeria1Model.vwOrder">
+              <MappingFragment StoreEntitySet="vwOrders">
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="dishId" ColumnName="dishId" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="dateAndTIme" ColumnName="dateAndTIme" />
+                <ScalarProperty Name="totalPrice" ColumnName="totalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
